@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('matricula');
+            $table->string('matricula')->unique();
             $table->string('cor')->nullable();
             $table->string('descricao')->nullable();
             $table->bigInteger('idTipo')->unsigned();

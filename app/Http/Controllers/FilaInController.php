@@ -129,6 +129,7 @@ class FilaInController extends Controller
                 'description' => $description,
                 'myTurn' => $myTurn,
                 'averageTime' => $averageTime,
+                'matricula' => $matricula,
             ];
             return $data;
 

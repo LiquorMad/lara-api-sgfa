@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Veiculo extends Model
 {
@@ -48,5 +49,19 @@ class Veiculo extends Model
             veiculos as v WHERE deleted_at IS NULL AND v.id 
             IN (SELECT idVeiculo from fila_ins)");
             
+    }
+    public static function isExistVeiculo($matricula){
+        try {
+            // Código que pode gerar erro
+            return DB::table('veiculo')->where('matricula', $matricula)->exists();
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Tratamento específico para erros de banco de dados (por exemplo, SQL)
+            Log::error('Erro na consulta ao banco de dados: ' . $e->getMessage());
+            return response()->json(['error' => 'Erro ao verificar matrícula no banco de dados.'], 500);
+        } catch (\Throwable $th) {
+            // Tratamento genérico para qualquer outra exceção
+            Log::error('Erro inesperado: ' . $th->getMessage());
+            return response()->json(['error' => 'Ocorreu um erro inesperado. Tente novamente mais tarde.'], 500);
+        }
     }
 }
